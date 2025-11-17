@@ -84,3 +84,7 @@ FROM Authors a
 LEFT JOIN Books b ON a.AuthorID = b.AuthorID
 GROUP BY a.Name
 ORDER BY NumberOfBooks DESC;
+
+
+
+
