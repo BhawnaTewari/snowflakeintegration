@@ -1,31 +1,44 @@
 name: snowflake-devops-demo
 
-# Controls when the workflow will run
 on:
+  # Runs automatically when code under dbscripts/ is pushed to main (deploys to dev by default)
   push:
     branches:
       - main
     paths:
       - 'dbscripts/**'
-  # Allows you to run this workflow manually from the Actions tab
+
+  # Allows manual run and lets you choose dev / qa / prod
   workflow_dispatch:
+    inputs:
+      target_env:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - qa
+          - prod
 
 jobs:
   deploy-snowflake-changes-job:
     runs-on: ubuntu-latest
 
+    # Link this job to a GitHub Environment (dev / qa / prod)
+    # If manually triggered -> use selected env from dropdown
+    # If triggered by push to main -> default to dev
+    environment: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.target_env || 'dev' }}
+
     steps:
-      # Step 1: Checks-out your repository so the job can access it
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Step 2: Use Python 3.8.x
       - name: Use Python 3.8.x
-        uses: actions/setup-python@v2.2.1
+        uses: actions/setup-python@v2
         with:
           python-version: 3.8.x
 
-      # Step 3: Install and run schemachange
       - name: Run schemachange
         env:
           SF_ACCOUNT: ${{ secrets.SF_ACCOUNT }}
@@ -41,4 +54,11 @@ jobs:
           pip install schemachange
           
           echo "Step 2: Running schemachange"
-          schemachange -f $GITHUB_WORKSPACE/dbscripts -a $SF_ACCOUNT -u $SF_USERNAME -r $SF_ROLE -w $SF_WAREHOUSE -d $SF_DATABASE -c $SF_DATABASE.SCHEMACHANGE.CHANGE_HISTORY --create-change-history-table
+          schemachange -f $GITHUB_WORKSPACE/dbscripts \
+            -a $SF_ACCOUNT \
+            -u $SF_USERNAME \
+            -r $SF_ROLE \
+            -w $SF_WAREHOUSE \
+            -d $SF_DATABASE \
+            -c $SF_DATABASE.SCHEMACHANGE.CHANGE_HISTORY \
+            --create-change-history-table
