@@ -1,4 +1,5 @@
 drop database if exists DEV_GW_CDA;
+
 -- Initial setup of roles, Database, Schemas and necessary privileges
 use role sysadmin;
 CREATE DATABASE IF NOT EXISTS DEV_GW_CDA;
