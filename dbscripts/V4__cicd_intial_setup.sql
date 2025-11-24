@@ -4,6 +4,7 @@
 
 -- Optional but safe to rerun in DEV:
 -- If DB exists, it is dropped & recreated.
+
 DROP DATABASE IF EXISTS DEV_GW_CDA;
 
 USE ROLE SYSADMIN;
