@@ -288,7 +288,7 @@ USE ROLE SECURITYADMIN;
 GRANT ROLE TASKADMIN TO ROLE DEV_GW_CDA_OWNER;
 
 --------------------------------------------------------
--- STORAGE INTEGRATION (IDEMPOTENT)
+-- STORAGE INTEGRATION 
 --------------------------------------------------------
 
 USE ROLE ACCOUNTADMIN;
