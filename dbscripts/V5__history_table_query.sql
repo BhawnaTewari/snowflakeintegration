@@ -1,3 +1,8 @@
-select * from payments;
-use database cicd_dev;
-select * from schemachange.change_history;
+CREATE OR REPLACE TABLE DEMO_SCHEMA.PAYMENTS_MODE (
+    PAYMENT_ID    NUMBER,
+    ORDER_ID      NUMBER,
+    PAYMENT_DATE  TIMESTAMP_NTZ,
+    MODE_USED        STRING,
+    AMOUNT        NUMBER(10,2)
+);
+
