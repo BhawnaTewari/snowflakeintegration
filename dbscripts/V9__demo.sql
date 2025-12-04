@@ -1,0 +1,4 @@
+create database  demo_db;
+
+create schema test_schema;
+create table demo_db.test_schema.test_table(ID number)
