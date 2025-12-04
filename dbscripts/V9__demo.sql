@@ -1,3 +1,4 @@
+drop database if exists demo_db;
 create database  demo_db;
 
 create schema test_schema;
